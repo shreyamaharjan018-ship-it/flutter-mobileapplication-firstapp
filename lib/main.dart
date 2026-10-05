@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const ProfileScreen(),
         '/details': (context) => const DetailsScreen(),
         '/settings': (context) => const SettingsScreen(),
+
       },
     );
   }
