@@ -1,7 +1,9 @@
 import 'package:newflutterproject/controller/apicall.dart';
-
-import 'detailpage.dart';
+import 'package:newflutterproject/model/news.dart';
+import 'package:newflutterproject/pages/detailpage.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_date_formatter/smart_date_formatter.dart';
+import '../core/staticfile.dart';
 
 class dashboard extends StatefulWidget {
   const dashboard({super.key});
@@ -11,14 +13,23 @@ class dashboard extends StatefulWidget {
 }
 
 class dashboardState extends State<dashboard> {
-@override
-void initState(){
-  super.initState();
-  Apicall().getnewsdata();
-}
-  horizontallistitem(size, String title,url, date){
+
+  Future<news?>? futurenewsdata;
+  @override
+  void initState() {
+    super.initState();
+    futurenewsdata = Apicall().getnewsdata();
+  }
+
+  horizontallistitem(size, String title,url, date,Articles art ){
+    var formatted = Staticfile.dateconverter(date);
+    date = formatted.split(",")[1];
     return GestureDetector(
       onTap: (){
+        //yah katai static ma save garnu paryo
+        Staticfile.article = art;
+
+        //route
         Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (context) => detailpage(),
@@ -75,66 +86,81 @@ void initState(){
     );
   }
 
-  static verticallistitem(size, String title, url, date, source){
-    return Row(
-      children: [
-        Stack(
-          children: [
-            Container(
-              height: 120,
-              width: 120,
-              margin: EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(20)
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(fit: BoxFit.cover,
-                    url),
-              ),
-            ),
-            Container(
-              height: 120,
-              width: 120,
-              margin: EdgeInsets.all(15),
-              child: Center(
-                child: Icon(Icons.play_circle_fill_rounded,
-                  size: 50,color: Colors.white,),
-              ),
-            )
-          ],
-        ),
-        Container(
-          height: 90,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+  static verticallistitem(context, size, String title, url, date, source,Articles art){
+    var formatted = Staticfile.dateconverter(date);
+    date = formatted;
+    return GestureDetector(
+      onTap: (){
+        //yah katai static ma save garnu paryo
+        Staticfile.article = art;
+
+        //route
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (context) => detailpage(),
+          ),
+        );
+      },
+      child: Row(
+        children: [
+          Stack(
             children: [
               Container(
-                width: size.width/2,
-                child: Text(title
-                  ,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                height: 120,
+                width: 120,
+                margin: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(20)
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(fit: BoxFit.cover,
+                      url),
+                ),
               ),
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 10,right: 10,
-                        top: 8,bottom: 8),
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Text(source,style: TextStyle(color: Colors.white),),
-                  ),
-                  SizedBox(width: 15,),
-                  Text(date,)
-                ],
+              Container(
+                height: 120,
+                width: 120,
+                margin: EdgeInsets.all(15),
+                child: Center(
+                  child: Icon(Icons.play_circle_fill_rounded,
+                    size: 50,color: Colors.white,),
+                ),
               )
             ],
           ),
-        )
-      ],
+          Container(
+            height: 90,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: size.width/2,
+                  child: Text(title
+                    ,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                ),
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(left: 10,right: 10,
+                          top: 8,bottom: 8),
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Text(source,style: TextStyle(color: Colors.white),),
+                    ),
+                    SizedBox(width: 15,),
+                    Text(date,)
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -145,71 +171,60 @@ void initState(){
       appBar: AppBar(),
       body: Column(
         children: [
-          //horizontal scroll items
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
 
-                horizontallistitem(size,
-                    "title happy dashain pcps family skdalsjdajd",
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHChfNjyZ5lscjYw8bx3HfITEb7oE5k1VY9vV_MNG--w&s=10",
-                    "03 feb 2026"),
-                horizontallistitem(size,
-                    "title happy dashain pcps family skdalsjdajd",
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHChfNjyZ5lscjYw8bx3HfITEb7oE5k1VY9vV_MNG--w&s=10",
-                    "03 feb 2026"),
-                horizontallistitem(size,
-                    "title happy dashain pcps family skdalsjdajd",
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHChfNjyZ5lscjYw8bx3HfITEb7oE5k1VY9vV_MNG--w&s=10",
-                    "03 feb 2026"),
-                horizontallistitem(size,
-                    "title happy dashain pcps family skdalsjdajd",
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHChfNjyZ5lscjYw8bx3HfITEb7oE5k1VY9vV_MNG--w&s=10",
-                    "03 feb 2026"),
-
-
-
-              ],
-            ),
-          ),
-
-          //vertical scroll items
-          Container(
-            height: size.height/1.6,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  verticallistitem(size,
-                      " happy dashain pcps family skdalsjdajd",
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYNBJaFUb3pMu0XkkBdNkmsaBuZoYsR78LNMLGEdLPig&s=10",
-                      "02 feb 2026",
-                      "PCPSNEWS"),
-                  verticallistitem(size,
-                      "title  dashain pcps family skdalsjdajd",
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYNBJaFUb3pMu0XkkBdNkmsaBuZoYsR78LNMLGEdLPig&s=10",
-                      "02 feb 2026",
-                      "PCPSNEWS"),
-                  verticallistitem(size,
-                      "title happy  pcps family skdalsjdajd",
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHChfNjyZ5lscjYw8bx3HfITEb7oE5k1VY9vV_MNG--w&s=10",
-                      "02 feb 2026",
-                      "PCPSNEWS"),
-                  verticallistitem(size,
-                      "title happy dashain family ",
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHChfNjyZ5lscjYw8bx3HfITEb7oE5k1VY9vV_MNG--w&s=10",
-                      "02 feb 2026",
-                      "PCPSNEWS"),
-                  verticallistitem(size,
-                      "title happy",
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHChfNjyZ5lscjYw8bx3HfITEb7oE5k1VY9vV_MNG--w&s=10",
-                      "02 feb 2026",
-                      "PCPSNEWS"),
-
-                ],
-              ),
-            ),
-          ),
+          FutureBuilder(
+              future: futurenewsdata,
+              builder: (context, AsyncSnapshot<news?> snapshot ){
+                switch (snapshot.connectionState) {
+                  case ConnectionState.active:
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return CircularProgressIndicator();
+                  case ConnectionState.done:
+                    if(snapshot.hasData){
+                      var data = snapshot.data;
+                      //ui dekhaune
+                      return Column(
+                        children: [
+                          Container(
+                            height: size.height/4,
+                            child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: data!.articles!.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return  horizontallistitem(size,
+                                      data.articles![index].title!,
+                                      data.articles![index].urlToImage,
+                                      data.articles![index].publishedAt,
+                                      data.articles![index]
+                                  );
+                                }
+                            ),
+                          ),
+                          Container(
+                            height: size.height/1.6,
+                            child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                scrollDirection: Axis.vertical,
+                                itemCount: data!.articles!.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return  verticallistitem(context,size,
+                                      data.articles![index].title!.toUpperCase(),
+                                      data.articles![index].urlToImage,
+                                      data.articles![index].publishedAt!.split("T")[0],
+                                      data.articles![index].source!.name,
+                                      data.articles![index]);
+                                }
+                            ),
+                          ),
+                        ],
+                      );
+                    }else{
+                      return Center(child: Text("No Data"),);
+                    }
+                }
+              }),
 
         ],
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newflutterproject/pages/dashboard.dart';
-
+import 'package:smart_date_formatter/smart_date_formatter.dart';
 void main() {
   runApp(const MyApp());
 }
