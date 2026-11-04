@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newflutterproject/core/staticfile.dart';
+import 'package:share_plus/share_plus.dart';
 import '../controller/apicall.dart';
 import '../model/news.dart';
 import 'dashboard.dart';
@@ -51,9 +52,16 @@ class _detailpageState extends State<detailpage> {
                 ),
                 Positioned(
                   right: 10,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.share,color: Colors.white,size: 40,),
+                  child: GestureDetector(
+                    onTap:(){
+                      SharePlus.instance.share(
+                        ShareParams(text: data.title! + " " + data.url!)
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.share,color: Colors.white,size: 40,),
+                    ),
                   ),
                 ),
                 Container(

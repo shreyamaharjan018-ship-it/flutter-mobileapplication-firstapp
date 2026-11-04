@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newflutterproject/chatapp/pages/loginPage.dart';
 import 'package:newflutterproject/pages/dashboard.dart';
 import 'package:smart_date_formatter/smart_date_formatter.dart';
 void main() {
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed (seedColor: Colors.deepPurple),
       ),
-      home:dashboard()
+      home:loginPage()
     );
   }
 }
